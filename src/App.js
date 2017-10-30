@@ -99,7 +99,10 @@ class MessageView extends React.Component {
         key={message.id}
         onClick={() => this.handleClick(message.id)}
       >
-        {message.text}
+        <div className="text">
+          {message.text}
+          <span className="metadata">@{message.timestamp}</span>
+        </div>
       </div>
     ));
     return (
