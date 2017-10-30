@@ -1,19 +1,21 @@
 import React from 'react';
 import { createStore } from 'redux';
+import uuid from 'uuid';
 
 function reducer(state, action) {
   if (action.type === 'ADD_MESSAGE') {
+    const newMessage = {
+      text: action.text,
+      timestamp: Date.now(),
+      id: uuid.v4(),
+    };
+
     return {
-      messages: state.messages.concat(action.message),
+      messages: state.messages.concat(newMessage),
     };
   } else if (action.type === 'DELETE_MESSAGE') {
     return {
-      messages: [
-        ...state.messages.slice(0, action.index),
-        ...state.messages.slice(
-          action.index + 1, state.messages.length
-        ),
-      ],
+      messages: state.messages.filter(msg => msg.id !== action.id)
     };
   } else {
     return state;
@@ -55,7 +57,7 @@ class MessageInput extends React.Component {
   handleSubmit = () => {
     store.dispatch({
       type: 'ADD_MESSAGE',
-      message: this.state.value,
+      text: this.state.value,
     });
     this.setState({
       value: '',
@@ -83,21 +85,21 @@ class MessageInput extends React.Component {
 }
 
 class MessageView extends React.Component {
-  handleClick = (index) => {
+  handleClick = (id) => {
     store.dispatch({
       type: 'DELETE_MESSAGE',
-      index: index,
+      id: id,
     });
   };
 
   render() {
-    const messages = this.props.messages.map((message, index) => (
+    const messages = this.props.messages.map((message) => (
       <div
         className='comment'
-        key={index}
-        onClick={() => this.handleClick(index)}
+        key={message.id}
+        onClick={() => this.handleClick(message.id)}
       >
-        {message}
+        {message.text}
       </div>
     ));
     return (
