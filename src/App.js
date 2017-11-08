@@ -1,6 +1,7 @@
 import React from 'react';
 import uuid from 'uuid';
 import { createStore, combineReducers } from 'redux';
+import { Provider, connect } from 'react-redux'
 
 const reducer = combineReducers({
   activeThreadId: activeThreadIdReducer,
@@ -110,34 +111,34 @@ const store = createStore(reducer);
  * * Interacts direclty with the store
  * * Defines methods for its presentation components
  */
-class ThreadTabs extends React.Component {
-  componentDidMount() {
-    store.subscribe(() => this.forceUpdate())
-  }
 
-  render() {
-    const state = store.getState();
-    const tabs = state.threads.map(t => (
+const ThreadTabs = connect(
+  mapStateToTabsProps,
+  mapDispatchToTabsProps
+)(Tabs)
+
+const mapStateToTabsProps = (state) => (
+  {
+    tabs: state.threads.map(t => (
       {
         title: t.title,
         active: t.id === state.activeThreadId,
         id: t.id,
       }
-    ))
-
-    return (
-      <Tabs
-        tabs={tabs}
-        onClick={(id) => (
-          store.dispatch({
-            type: 'OPEN_THREAD',
-            id: id,
-          })
-        )}
-      />
-    )
+    )),
   }
-}
+)
+
+const mapDispatchToTabsProps = (dispatch) => (
+  {
+    onClick: (id) => (
+      dispatch({
+        type: 'OPEN_THREAD',
+        id: id,
+      })
+    ),
+  }
+)
 
 /*
  * presentational component
@@ -258,10 +259,16 @@ class ThreadDisplay extends React.Component {
 }
 
 const App = () => (
-  <div className='ui segment'>
-    {} <ThreadTabs />
+  <div className="ui segements">
+    <ThreadTabs />
     <ThreadDisplay />
   </div>
 )
 
-export default App;
+const WrappedApp = () => (
+  <Provider store={store} >
+    <App />
+  </Provider>
+)
+
+export default WrappedApp;
