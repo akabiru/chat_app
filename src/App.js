@@ -1,40 +1,43 @@
 import React from 'react';
 import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux'
 
-import reducer from './reducers'
+import RootReducer from './reducers'
 import Thread from './components/Thread'
 import Tabs from './components/Tabs'
 
-const store = createStore(reducer);
-class ThreadTabs extends React.Component {
-  componentDidMount() {
-    store.subscribe(() => this.forceUpdate());
-  }
+const store = createStore(RootReducer);
 
-  render() {
-    const state = store.getState();
-
-    const tabs = state.threads.map(t => (
+/*
+ * Describe how state maps to Tabs props
+ */
+const mapStateToTabsProps = state => (
+  {
+    tabs: state.threads.map((t) => (
       {
         title: t.title,
         active: t.id === state.activeThreadId,
         id: t.id,
       }
-    ));
-
-    return (
-      <Tabs
-        tabs={tabs}
-        onClick={(id) => (
-          store.dispatch({
-            type: 'OPEN_THREAD',
-            id: id,
-          })
-        )}
-      />
-    );
+    )),
   }
-}
+)
+
+const mapDispatchToTabsProps = dispatch => (
+  {
+    onClick: (id) => (
+      dispatch({
+        type: 'OPEN_THREAD',
+        id: id,
+      })
+    ),
+  }
+)
+
+const ThreadTabs = connect(
+  mapStateToTabsProps,
+  mapDispatchToTabsProps
+)(Tabs)
 
 class ThreadDisplay extends React.Component {
   componentDidMount() {
@@ -69,11 +72,25 @@ class ThreadDisplay extends React.Component {
   }
 }
 
+/*
+* Container Components
+** Suscribe to the store in componentDidMount
+** Massage data and pass to presentation components as props
+** Map actions on the presentation components
+*
+* connect()
+** For each presentational component, we can write functions
+** that specify how state should map to props and how events
+** should map to dispatches.
+*/
+
 const App = () => (
-  <div className="ui segment">
-    <ThreadTabs />
-    <ThreadDisplay />
-  </div>
+  <Provider store={store}>
+    <div className="ui segment">
+      <ThreadTabs />
+      <ThreadDisplay />
+    </div>
+  </Provider>
 )
 
 export default App;
