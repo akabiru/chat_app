@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 function messagesReducer(state = [], action) {
   switch (action.type) {
     case 'ADD_MESSAGE': {

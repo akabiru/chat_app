@@ -12,6 +12,8 @@ function findThreadIndex(threads, action) {
         ))
       );
     }
+    default:
+      return threads
   }
 }
 

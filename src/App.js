@@ -1,6 +1,5 @@
 import React from 'react';
-import uuid from 'uuid';
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 
 import reducer from './reducers'
 import Thread from './components/Thread'
@@ -30,7 +29,7 @@ class App extends React.Component {
     return (
       <div className='ui segment'>
         <ThreadTabs tabs={tabs} />
-        <Thread thread={activeThread} />
+        <ThreadDisplay />
       </div>
     );
   }

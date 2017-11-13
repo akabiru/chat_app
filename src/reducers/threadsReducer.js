@@ -1,3 +1,4 @@
+import messagesReducer from './messagesReducer'
 import findThreadIndex from './findThreadIndex'
 
 function threadsReducer(state = [
