@@ -1,12 +1,6 @@
 import React from 'react';
-import { createStore } from 'redux';
-import { Provider} from 'react-redux'
-
-import RootReducer from './reducers'
 import ThreadTabs from './containers/ThreadTabs'
 import ThreadDisplay from './containers/ThreadDisplay'
-
-const store = createStore(RootReducer);
 
 /*
 * Container Components
@@ -21,12 +15,10 @@ const store = createStore(RootReducer);
 */
 
 const App = () => (
-  <Provider store={store}>
-    <div className="ui segment">
-      <ThreadTabs />
-      <ThreadDisplay />
-    </div>
-  </Provider>
+  <div className="ui segment">
+    <ThreadTabs />
+    <ThreadDisplay />
+  </div>
 )
 
 export default App;
