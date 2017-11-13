@@ -1,12 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom";
-// Readers: To prepare this project for building along in `./App.js`:
-// [1] Comment out this line:
-// import App from "./complete/App-17";
-// [2] Un-comment this line:
-import WrappedApp from "./App";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+
+import configureStore from './store/configureStore'
+import App from "./App";
 
 import "./index.css";
 import "../semantic/dist/semantic.css";
 
-ReactDOM.render(<WrappedApp />, document.getElementById("root"));
+const store = configureStore()
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
