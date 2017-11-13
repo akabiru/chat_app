@@ -1,45 +1,12 @@
 import React from 'react';
 import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux'
+import { Provider} from 'react-redux'
 
 import RootReducer from './reducers'
 import ThreadTabs from './containers/ThreadTabs'
-import Thread from './components/Thread'
+import ThreadDisplay from './containers/ThreadDisplay'
 
 const store = createStore(RootReducer);
-
-class ThreadDisplay extends React.Component {
-  componentDidMount() {
-    store.subscribe(() => this.forceUpdate());
-  }
-
-  render() {
-    const state = store.getState();
-    const activeThreadId = state.activeThreadId;
-    const activeThread = state.threads.find(
-      t => t.id === activeThreadId
-    );
-
-    return (
-      <Thread
-        thread={activeThread}
-        onMessageClick={(id) => (
-          store.dispatch({
-            type: 'DELETE_MESSAGE',
-            id: id,
-          })
-        )}
-        onMessageSubmit={(text) => (
-          store.dispatch({
-            type: 'ADD_MESSAGE',
-            text: text,
-            threadId: activeThreadId,
-          })
-        )}
-      />
-    );
-  }
-}
 
 /*
 * Container Components
