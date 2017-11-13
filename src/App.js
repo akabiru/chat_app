@@ -3,41 +3,10 @@ import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux'
 
 import RootReducer from './reducers'
+import ThreadTabs from './containers/ThreadTabs'
 import Thread from './components/Thread'
-import Tabs from './components/Tabs'
 
 const store = createStore(RootReducer);
-
-/*
- * Describe how state maps to Tabs props
- */
-const mapStateToTabsProps = state => (
-  {
-    tabs: state.threads.map((t) => (
-      {
-        title: t.title,
-        active: t.id === state.activeThreadId,
-        id: t.id,
-      }
-    )),
-  }
-)
-
-const mapDispatchToTabsProps = dispatch => (
-  {
-    onClick: (id) => (
-      dispatch({
-        type: 'OPEN_THREAD',
-        id: id,
-      })
-    ),
-  }
-)
-
-const ThreadTabs = connect(
-  mapStateToTabsProps,
-  mapDispatchToTabsProps
-)(Tabs)
 
 class ThreadDisplay extends React.Component {
   componentDidMount() {
