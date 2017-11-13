@@ -4,9 +4,9 @@ import ReactDOM from "react-dom";
 // [1] Comment out this line:
 // import App from "./complete/App-17";
 // [2] Un-comment this line:
-import WrappedApp from "./App";
+import App from "./App";
 
 import "./index.css";
 import "../semantic/dist/semantic.css";
 
-ReactDOM.render(<WrappedApp />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
